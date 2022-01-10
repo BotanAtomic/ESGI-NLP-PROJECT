@@ -2,6 +2,7 @@ from transformers import TFAutoModelForSequenceClassification
 from transformers import AutoTokenizer
 import numpy as np
 from scipy.special import softmax
+import pickle
 
 from utils import load_tweets
 
@@ -33,19 +34,27 @@ model = TFAutoModelForSequenceClassification.from_pretrained(MODEL)
 
 scores_map = {}
 
+batch_size = 32
+batches = np.array_split(tweets, len(tweets) // batch_size)
+
 i = 0
-for _, tweet in tweets.iterrows():
-    text = preprocess(tweet['content'])
-    encoded_input = tokenizer(text, return_tensors='tf')
+for batch in batches:
+    ids = batch['id'].values
+    texts = batch['content'].map(lambda x: preprocess(x)).values
+
+    encoded_input = tokenizer(list(texts), padding=True, truncation=True, return_tensors='tf')
+
     output = model(encoded_input)
-    scores = output[0][0].numpy()
+    scores = output[0].numpy()
     scores = softmax(scores)
 
-    scores_map[tweet['id']] = normalize_score(*scores)
+    for idx, score in enumerate(scores):
+        scores_map[ids[idx]] = normalize_score(*score)
+
+    i += 1
 
     if i % 1000 == 0:
         print(f'Progression: {i} / {len(tweets)}')
 
-    i += 1
-
-
+with open('scores.pkl', 'wb') as file:
+    pickle.dump(scores_map, file, pickle.HIGHEST_PROTOCOL)
