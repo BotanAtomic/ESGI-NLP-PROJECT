@@ -1,4 +1,6 @@
 import glob
+import pickle
+
 import pandas as pd
 import os
 
@@ -45,3 +47,8 @@ def load_tweets(base_path, columns=None):
     data = pd.concat(tweets_batch)
     data = data[columns]
     return data
+
+
+def load_scores(path):
+    with open(path, 'rb') as file:
+        return pickle.load(file)
