@@ -3,6 +3,8 @@ from datetime import datetime
 import os
 import csv
 
+from utils import PLAYERS
+
 
 def scrap(query, file):
     print(query)
@@ -42,36 +44,7 @@ def scrap(query, file):
                 break
 
 
-QUERIES = {
-    "Chiellini": ["Chiellini"],
-    "De Bruyne": ["De Bruyne"],
-    "Ruben Dias": ["Ruben Dias"],
-    "Donnarumma": ["Donnarumma"],
-    "Fernandes": ["Fernandes"],
-    "Foden": ["Foden"],
-    "Haaland": ["Haaland"],
-    "Jorginho": ["Jorginho"],
-    "Kane": ["Harry Kane", "Kane"],
-    "Kante": ["N'Golo Kante", "Kante", "Ngolo Kante"],
-    "Kjaer": ["Kjaer"],
-    "Lewandowski": ["Lewandowski"],
-    "Lukaku": ["Lukaku"],
-    "Mahrez": ["Mahrez"],
-    "Martinez": ["Lautaro Martinez"],
-    "Mbappe": ["Mbappe", "M'bappe"],
-    "Messi": ["Messi"],
-    "Modric": ["Modric"],
-    "Moreno": ["Moreno"],
-    "Mount": ["Mason Mount"],
-    "Neymar": ["Neymar"],
-    "Pedri": ["Pedri"],
-    "Ronaldo": ["Ronaldo", "CR7"],
-    "Salah": ["Mohammed Salah", "Salah", "Mohamed Salah"],
-    "Sterling": ["Sterling"],
-    "Suarez": ["Suarez"]
-}
-
-for query_key in QUERIES:
-    keywords = " ".join(QUERIES[query_key])
+for query_key in PLAYERS:
+    keywords = " ".join(PLAYERS[query_key])
     query = f"{keywords} lang:en since:2021-09-28 until:2021-11-28"
     scrap(query, f"tweets/{query_key}.csv")
