@@ -52,3 +52,8 @@ def load_tweets(base_path, columns=None):
 def load_scores(path):
     with open(path, 'rb') as file:
         return pickle.load(file)
+
+
+def load_irony_probabilities(path):
+    with open(path, 'rb') as file:
+        return pickle.load(file)
