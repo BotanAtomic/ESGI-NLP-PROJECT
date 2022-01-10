@@ -51,8 +51,7 @@ for batch in batches:
 
     for idx, score in enumerate(scores):
         irony = score[1]
-        if irony > 0.9:
-            irony_map[ids[idx]] = irony
+        irony_map[ids[idx]] = irony
 
     i += 1
 
