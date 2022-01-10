@@ -5,6 +5,7 @@ import csv
 
 
 def scrap(query, file):
+    print(query)
     items = sntwitter.TwitterSearchScraper(query).get_items()
 
     try:
@@ -34,8 +35,11 @@ def scrap(query, file):
             csv_writer.writerow(features)
             i += 1
 
-            if i % 10_000 == 0:
+            if i % 500 == 0:
                 print(i, "tweets downloaded")
+
+            if i >= 10_000:
+                break
 
 
 QUERIES = {
@@ -69,6 +73,5 @@ QUERIES = {
 
 for query_key in QUERIES:
     keywords = " ".join(QUERIES[query_key])
-    query = f"{keywords} lang:en since:2021-28-09 until:2021-28-11"
-
+    query = f"{keywords} lang:en since:2021-09-28 until:2021-11-28"
     scrap(query, f"tweets/{query_key}.csv")
