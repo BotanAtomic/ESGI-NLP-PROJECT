@@ -41,11 +41,12 @@ def load_tweets(base_path, columns=None):
     tweets_batch = []
     for file in glob.glob(base_path):
         current_data = pd.read_csv(file, sep=";")
-        current_data['player'] = file.split(os.path.sep)[-1].split(".csv")[0]
+        current_data['player'] = file.split(os.path.sep)[-2].split(".csv")[0]
         tweets_batch.append(current_data)
 
     data = pd.concat(tweets_batch)
     data = data[columns]
+    data.drop_duplicates(subset=['id'], inplace=True, keep=False)
     return data
 
 

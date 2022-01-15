@@ -8,7 +8,7 @@ from utils import load_tweets
 
 
 def normalize_score(negative, neutral, positive):
-    return ((positive + neutral / 2) * 2) - 1 if positive > negative else -((negative + neutral / 2) * 2) + 1
+    return (positive - negative) * (1-neutral) if positive > negative else -((negative - positive) * (1-neutral))
 
 
 def preprocess(text):
@@ -21,7 +21,7 @@ def preprocess(text):
     return " ".join(new_text)
 
 
-tweets = load_tweets("tweets/*.csv")
+tweets = load_tweets("tweets/*/*.csv")
 
 task = 'sentiment'
 MODEL = f"cardiffnlp/twitter-roberta-base-{task}"
